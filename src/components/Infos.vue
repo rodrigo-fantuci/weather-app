@@ -1,5 +1,5 @@
 <template>
-  <div class="q-py-md q-px-xl text-white">
+  <div class="q-py-md q-px-xl text-white" :class="[bgForecast]" style="border-radius: 10px;">
     <div class="row">
       <div class="col-6">
         <h6 class="opacity">Umidade</h6>
@@ -35,13 +35,14 @@
 
 <script>
   export default {
-    inject: ['dataForecast', 'forecastBg',],
-    data() {
-      return {
-        forecastData: this.dataForecast,
-        bgForecast: this.forecastBg,
-        sunrise: '',
-        sunset: ''
+    props: {
+      forecastData: {
+        type: Object,
+        required: true,
+      },
+      bgForecast: {
+        type: String,
+        required: true,
       }
     },
     methods: {

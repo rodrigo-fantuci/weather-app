@@ -1,16 +1,25 @@
 <template>
   <q-layout>
     <q-page class="flex flex-center" :class="[bgForecast]">
-      <div class="my-card shadow-20 rounded-borders" :class="[bgCard]">
-        <q-page class="text-white" :style-fn="setHeightPage">
+      <div class="my-card shadow-20 text-white" :class="[bgCard]" style="border-radius: 10px;">
 
-        <Main />
+        <Main
+          v-if="isRequested"
+          :forecastData="this.forecast"
+          :currentHour="this.getDate()"
+          :iconCard="this.iconCard"
+        />
 
-        <Forecast />
+        <Forecast
+          :forecastData="this.forecast"
+          :bgForecast="this.bgForecast"
+        />
 
-        <Infos />
+        <Infos
+          :forecastData="this.forecast"
+          :bgForecast="this.bgForecast"
+        />
 
-        </q-page>
       </div>
     </q-page>
   </q-layout>
@@ -21,7 +30,6 @@ import Main from "./components/Main.vue"
 import Forecast from "./components/Forecast.vue"
 import Infos from "./components/Infos.vue"
 import { date } from "quasar"
-import { computed } from "vue"
 
 export default {
   name: 'App',
@@ -34,6 +42,7 @@ export default {
     return {
       url_base: 'api.openweathermap.org/data/2.5/',
       api_key: '4770661f1131cd5b86437acbf27d2e87',
+      isRequested: false,
       currentHour: '',
       forecast: '',
       iconD: '',
@@ -43,21 +52,14 @@ export default {
       iconCard: '',
     }
   },
-    provide() {
-      return {
-        dataForecast: computed(() => this.forecast),
-        hour: computed(() => this.getDate()),
-        cardIcon: computed(() => this.iconCard),
-        forecastBg: computed(() => this.bgForecast)
-      }
-    },
-  methods: {
+    methods: {
     async getData() {
       const res = await fetch(`http://api.openweathermap.org/data/2.5/forecast?id=3464460&units=metric&lang=pt_br&appid=${this.api_key}`)
       const data = await res.json()
       this.forecast = data
+      this.isRequested = true
 
-      console.log(this.forecast);
+      this.getDate()
       this.getClasses()
     },
     getDate() {
@@ -74,7 +76,7 @@ export default {
     getClasses() {
       const weatherNow = this.forecast.list[0].weather[0].description
 
-      if (this.currentHour <= 6 && this.currentHour >= 18) {
+      if (this.currentHour <= 6 || this.currentHour >= 18) {
         switch (weatherNow) {
           case 'céu limpo':
               this.bgCard = 'bg-grey-10'
@@ -85,7 +87,7 @@ export default {
             case 'algumas nuvens':
               this.bgCard = 'bg-grey-10'
               this.bgForecast = 'bg-grey-9'
-              this.iconCard = 'bi bi-cloud'
+              this.iconCard = 'bi bi-cloud-sun'
               break
             case 'nublado':
               this.bgCard = 'bi bg-grey-10'
@@ -159,8 +161,8 @@ export default {
     capitalizeString(string) {
       return string[0].toUpperCase() + string.slice(1);
     },
-    setHeightPage(offset) {
-      return {minHeight: 0}
+    pageHeight () {
+      return { minHeight: 0 }
     }
   },
   beforeMount() {
@@ -178,21 +180,19 @@ export default {
 }
 
 .my-card {
-  width: 50vw;
+  width: 40vw;
 }
 
 .iconMain {
-  padding: 2rem;
+  padding: 1rem;
   border-radius: 50%;
-  font-size: 10rem;
-  position: absolute;
-  right: 60px;
+  font-size: 11rem;
 }
-
 
 .opacity {
   opacity: .8;
 }
+
 @media (max-width: 1420px) {
   .my-card {
     width: 70vw;
@@ -212,6 +212,15 @@ export default {
 
   h4 {
     font-size: 1.5rem;
+  }
+
+  .city-name {
+    font-size: 1.2rem;
+  }
+
+  .description {
+    font-size: 1.2rem;
+    margin-top: 1rem;
   }
 }
 

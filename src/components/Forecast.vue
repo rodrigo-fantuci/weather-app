@@ -1,8 +1,8 @@
 <template>
-  <q-scroll-area class="forecast rounded-borders q-mb-md" :class="[this.bgForecast]">
+  <q-scroll-area class="forecast rounded-borders q-mb-xl" :class="[bgForecast]" style="border-radius: 10px;">
     <div class="row no-wrap">
       <div v-for="n in 13" :key="n" class="flex flex-center forecast-item q-pa-lg" style="height: 10px">
-        <h6 class="text-white"> {{ formatHour(n) }} </h6>
+        <h6 class="text-white"> {{ formatHour(n - 1) }} </h6>
         <h6 class="text-weight-bolder"> {{ Math.round(this.forecastData.list[n].main.temp) }}° </h6>
         <img :src="`${this.url_icon}${getIcon(n)}.png`">
       </div>
@@ -12,14 +12,21 @@
 
 <script>
   import { date } from "quasar"
-  import { inject } from "vue"
+
   export default {
-    inject: ['dataForecast', 'forecastBg'],
+    props: {
+      forecastData: {
+        type: Object,
+        required: true,
+      },
+      bgForecast: {
+        type: String,
+        required: true
+      }
+    },
     data() {
       return {
         url_icon: 'http://openweathermap.org/img/wn/',
-        forecastData: this.dataForecast,
-        bgForecast: this.forecastBg,
       }
     },
     methods: {
@@ -35,9 +42,7 @@
       },
       getIcon(n) {
         const weatherNow = this.forecastData.list[n].weather[0].description
-        const timeStampForecast = new Date(this.forecastData.list[n].dt_txt)
-        const hourFormatted = date.subtractFromDate(timeStampForecast, { hours: 4 })
-        const currentHour = hourFormatted.getHours()
+        const currentHour = this.formatHour(n)
         let iconD;
         let iconN;
 
@@ -71,7 +76,7 @@
             break
         }
 
-          if (currentHour <= 5 || currentHour >= 18) {
+          if (currentHour <= 6 || currentHour >= 18) {
             return iconN
           }
           return iconD
@@ -83,6 +88,6 @@
 <style>
   .forecast {
     height: 150px;
-    margin-top: 100px;
+    margin-top: 40px;
   }
 </style>
