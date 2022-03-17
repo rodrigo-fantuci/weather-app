@@ -13,14 +13,14 @@
     <div class="row q-my-md">
       <div class="col-6">
         <h6 class="opacity">Visibilidade</h6>
-        <h4 class="text-weight-bold"> {{(this.forecastData.list[0].visibility / 1000)}}km</h4>
+        <h4 class="text-weight-bold"> {{(this.forecastData.list[0].visibility / 1000)}}km </h4>
       </div>
       <div class="col-6">
         <h6 class=" opacity">Vento</h6>
         <h4 class="text-weight-bold"> {{this.forecastData.list[0].wind.speed}} m/s </h4>
       </div>
     </div>
-    <div class="row q-my-md">
+    <div class="row q-mt-md">
       <div class="col-6">
         <h6 class="opacity">Amanhecer</h6>
         <h4 class="text-weight-bold"> {{ getSunHours()[0] }} </h4>
@@ -50,12 +50,7 @@
         const sunrise = new Date(this.forecastData.city.sunrise * 1000)
         const sunset = new Date(this.forecastData.city.sunset * 1000)
 
-        const sunriseHour = sunrise.getHours()
-        const sunriseMinute = sunrise.getMinutes()
-        const sunsetHour = sunset.getHours()
-        const sunsetMinute = sunset.getMinutes()
-
-        return [sunriseHour + ':' + sunriseMinute, sunsetHour + ':' + sunsetMinute]
+        return [sunrise.getHours() + ':' + sunrise.getMinutes(), sunset.getHours() + ':' + sunset.getMinutes()]
       }
     }
   }

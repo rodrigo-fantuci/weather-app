@@ -4,7 +4,7 @@
       <div v-for="n in 13" :key="n" class="flex flex-center forecast-item q-pa-lg" style="height: 10px">
         <h6 class="text-white"> {{ formatHour(n - 1) }} </h6>
         <h6 class="text-weight-bolder"> {{ Math.round(this.forecastData.list[n].main.temp) }}° </h6>
-        <img :src="`${this.url_icon}${getIcon(n)}.png`">
+        <img :src="`${this.url_icon}${getIcon(n - 1)}.png`">
       </div>
     </div>
   </q-scroll-area>
@@ -32,17 +32,16 @@
     methods: {
       formatHour(n) {
         const timeStampForecast = new Date(this.forecastData.list[n].dt_txt)
-        const hourFormatted = date.subtractFromDate(timeStampForecast, { hours: 4 })
-        const currentHour = hourFormatted.getHours()
+        const hourFormatted = date.subtractFromDate(timeStampForecast, { hours: 4 }).getHours()
 
-        if (currentHour < 10) {
-          return `0${currentHour}:00`
+        if (hourFormatted < 10) {
+          return `0${hourFormatted}:00`
         }
-        return currentHour + ':00'
+        return hourFormatted + ':00'
       },
       getIcon(n) {
         const weatherNow = this.forecastData.list[n].weather[0].description
-        const currentHour = this.formatHour(n)
+        const currentHour = this.formatHour(n).slice(0, 2)
         let iconD;
         let iconN;
 
@@ -52,6 +51,7 @@
             iconN = '01n'
             break
           case 'nuvens dispersas':
+          case 'algumas nuvens':
             iconD = '02d'
             iconN = '02n'
             break
@@ -60,19 +60,21 @@
             iconN = '04n'
             break
           case 'chuva leve':
-            iconD = '09d'
-            iconN = '09n'
+          case 'chuva moderada':
+            iconD = '10d'
+            iconN = '10n'
             break
-          case 'chuva ':
+          case 'chuva forte':
             iconD = '09d'
             iconN = '09n'
             break
           case 'tempestade':
             iconD = '11d'
             iconN = '11n'
+            break
           default:
-            iconD = '01d'
-            iconN = '01n'
+            iconD = '02d'
+            iconN = '02n'
             break
         }
 
@@ -88,6 +90,5 @@
 <style>
   .forecast {
     height: 150px;
-    margin-top: 40px;
   }
 </style>

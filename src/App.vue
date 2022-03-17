@@ -1,7 +1,6 @@
 <template>
-  <q-layout>
-    <q-page class="flex flex-center" :class="[bgForecast]">
-      <div class="my-card shadow-20 text-white" :class="[bgCard]" style="border-radius: 10px;">
+  <q-layout class="flex flex-center" :class="[bgForecast]">
+    <q-page class="my-card shadow-20 text-white" :style-fn="this.pageHeight" :class="[bgCard]" style="border-radius: 10px;">
 
         <Main
           v-if="isRequested"
@@ -11,16 +10,17 @@
         />
 
         <Forecast
+          v-if="isRequested"
           :forecastData="this.forecast"
           :bgForecast="this.bgForecast"
         />
 
         <Infos
+          v-if="isRequested"
           :forecastData="this.forecast"
           :bgForecast="this.bgForecast"
         />
 
-      </div>
     </q-page>
   </q-layout>
 </template>
@@ -59,6 +59,7 @@ export default {
       this.forecast = data
       this.isRequested = true
 
+      console.log(this.forecast);
       this.getDate()
       this.getClasses()
     },
@@ -67,8 +68,8 @@ export default {
       const formattedString = date.formatDate(timeStamp, 'dddd, HH', {
         days: ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'],
       })
-
       const formattedHour = date.formatDate(timeStamp, 'HH')
+
       this.currentHour = formattedHour
 
       return formattedString + 'h'
@@ -80,7 +81,7 @@ export default {
         switch (weatherNow) {
           case 'céu limpo':
               this.bgCard = 'bg-grey-10'
-              this.bgForecast = 'bg-dark'
+              this.bgForecast = 'bg-grey-9'
               this.iconCard = 'bi bi-sun'
               break
             case 'nuvens dispersas':
@@ -94,9 +95,9 @@ export default {
               this.bgForecast = 'bi bg-grey-9'
               this.iconCard = 'bi bi-cloud'
               break
-            case ('chuva leve'):
-            case ('chuva moderada'):
-              this.bgCard = 'bi bg-grey-106'
+            case 'chuva leve':
+            case 'chuva moderada':
+              this.bgCard = 'bi bg-grey-10'
               this.bgForecast = 'bi bg-grey-9'
               this.iconCard = 'bi bi-cloud-drizzle'
               break
@@ -158,10 +159,7 @@ export default {
         }
       }
     },
-    capitalizeString(string) {
-      return string[0].toUpperCase() + string.slice(1);
-    },
-    pageHeight () {
+    pageHeight() {
       return { minHeight: 0 }
     }
   },
@@ -180,13 +178,14 @@ export default {
 }
 
 .my-card {
-  width: 40vw;
+  width: 45vw;
 }
 
 .iconMain {
   padding: 1rem;
   border-radius: 50%;
   font-size: 11rem;
+  margin-top: -40px;
 }
 
 .opacity {
@@ -202,6 +201,7 @@ export default {
 @media (max-width: 860px) {
   .my-card {
     width: 100vw;
+    height: 100vh;
   }
 
   .iconMain {
@@ -220,7 +220,7 @@ export default {
 
   .description {
     font-size: 1.2rem;
-    margin-top: 1rem;
+    margin: 1rem 0;
   }
 }
 
