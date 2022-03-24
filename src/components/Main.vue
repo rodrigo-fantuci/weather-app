@@ -1,5 +1,5 @@
 <template>
-    <h5 class="text-center text-white q-mt-lg" style="height: 50px;">{{ currentHour }}</h5>
+  <h5 class="text-center text-white q-mt-lg" style="height: 50px;">{{ currentHour }}</h5>
 
   <div class="row q-mt-lg">
     <div class="col-6 q-pl-xl">
