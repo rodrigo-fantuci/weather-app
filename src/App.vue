@@ -2,7 +2,7 @@
   <q-layout class="flex flex-center" :class="[bgForecast]">
     <q-page class="my-card shadow-20 text-white" :style-fn="this.pageHeight" :class="[bgCard]" style="border-radius: 10px;">
 
-        <Main
+         <Main
           v-if="isRequested"
           :forecastData="this.forecast"
           :currentHour="this.getDate()"
@@ -54,12 +54,13 @@ export default {
   },
     methods: {
     async getData() {
-      const res = await fetch(`http://api.openweathermap.org/data/2.5/forecast?id=3464460&units=metric&lang=pt_br&appid=${this.api_key}`)
+      const res = await fetch('http://localhost:5000/api/results')
       const data = await res.json()
+
       this.forecast = data
       this.isRequested = true
 
-      console.log(this.forecast);
+      console.log(this.forecast)
       this.getDate()
       this.getClasses()
     },
@@ -75,51 +76,51 @@ export default {
       return formattedString + 'h'
     },
     getClasses() {
-      const weatherNow = this.forecast.list[0].weather[0].description
+      const weatherNow = this.forecast[0].description
 
       if (this.currentHour <= 6 || this.currentHour >= 18) {
         switch (weatherNow) {
-          case 'céu limpo':
-              this.bgCard = 'bg-grey-10'
-              this.bgForecast = 'bg-grey-9'
-              this.iconCard = 'bi bi-sun'
-              break
-            case 'nuvens dispersas':
-            case 'algumas nuvens':
-              this.bgCard = 'bg-grey-10'
-              this.bgForecast = 'bg-grey-9'
-              this.iconCard = 'bi bi-cloud-sun'
-              break
-            case 'nublado':
-              this.bgCard = 'bi bg-grey-10'
-              this.bgForecast = 'bi bg-grey-9'
-              this.iconCard = 'bi bi-cloud'
-              break
-            case 'chuva leve':
-            case 'chuva moderada':
-              this.bgCard = 'bi bg-grey-10'
-              this.bgForecast = 'bi bg-grey-9'
-              this.iconCard = 'bi bi-cloud-drizzle'
-              break
-            case 'chuva forte':
-              this.bgCard = 'bi bg-grey-10'
-              this.bgForecast = 'bi bg-grey-9'
-              this.iconCard = 'bi bi-cloud-rain-heavy'
-              break
-            case 'tempestade':
-              this.bgCard = 'bi bg-grey-10'
-              this.bgForecast = 'bi bg-grey-9'
-              this.iconCard = 'bi bi-cloud-lightning-rain'
-              break
-            default:
-              this.bgCard = 'bg-white'
-              this.bgForecast = 'bg-dark'
-              this.iconCard = ''
-              break
+          case 'ceu limpo':
+            this.bgCard = 'bg-grey-10'
+            this.bgForecast = 'bg-grey-9'
+            this.iconCard = 'bi bi-sun'
+            break
+          case 'nuvens dispersas':
+          case 'algumas nuvens':
+            this.bgCard = 'bg-grey-10'
+            this.bgForecast = 'bg-grey-9'
+            this.iconCard = 'bi bi-cloud-sun'
+            break
+          case 'nublado':
+            this.bgCard = 'bi bg-grey-10'
+            this.bgForecast = 'bi bg-grey-9'
+            this.iconCard = 'bi bi-cloud'
+            break
+          case 'chuva leve':
+          case 'chuva moderada':
+            this.bgCard = 'bi bg-grey-10'
+            this.bgForecast = 'bi bg-grey-9'
+            this.iconCard = 'bi bi-cloud-drizzle'
+            break
+          case 'chuva forte':
+            this.bgCard = 'bi bg-grey-10'
+            this.bgForecast = 'bi bg-grey-9'
+            this.iconCard = 'bi bi-cloud-rain-heavy'
+            break
+          case 'tempestade':
+            this.bgCard = 'bi bg-grey-10'
+            this.bgForecast = 'bi bg-grey-9'
+            this.iconCard = 'bi bi-cloud-lightning-rain'
+            break
+          default:
+            this.bgCard = 'bg-white'
+            this.bgForecast = 'bg-dark'
+            this.iconCard = ''
+            break
         }
       } else if (this.currentHour > 6 && this.currentHour < 18) {
           switch (weatherNow) {
-            case 'céu limpo':
+            case 'ceu limpo':
               this.bgCard = 'bg-amber-8'
               this.bgForecast = 'bg-amber-6'
               this.iconCard = 'bi bi-sun'

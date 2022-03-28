@@ -3,21 +3,21 @@
     <div class="row">
       <div class="col-6">
         <h6 class="opacity">Umidade</h6>
-        <h4 class="text-weight-bold"> {{this.forecastData.list[0].main.humidity}}% </h4>
+        <h4 class="text-weight-bold"> {{forecastData[0].humidity}}% </h4>
       </div>
       <div class="col-6">
         <h6 class="opacity">Pressão</h6>
-        <h4 class="text-weight-bold"> {{this.forecastData.list[0].main.pressure}}hpa </h4>
+        <h4 class="text-weight-bold"> {{forecastData[0].pressure}}hpa </h4>
       </div>
     </div>
     <div class="row q-my-md">
       <div class="col-6">
         <h6 class="opacity">Visibilidade</h6>
-        <h4 class="text-weight-bold"> {{(this.forecastData.list[0].visibility / 1000)}}km </h4>
+        <h4 class="text-weight-bold"> {{(forecastData[0].visibility / 1000)}}km </h4>
       </div>
       <div class="col-6">
         <h6 class=" opacity">Vento</h6>
-        <h4 class="text-weight-bold"> {{this.forecastData.list[0].wind.speed}} m/s </h4>
+        <h4 class="text-weight-bold"> {{forecastData[0].wind_speed}} m/s </h4>
       </div>
     </div>
     <div class="row q-mt-md">
@@ -47,8 +47,8 @@
     },
     methods: {
       getSunHours() {
-        const sunrise = new Date(this.forecastData.city.sunrise * 1000)
-        const sunset = new Date(this.forecastData.city.sunset * 1000)
+        const sunrise = new Date(this.forecastData[0].sunrise * 1000)
+        const sunset = new Date(this.forecastData[0].sunset * 1000)
 
         return [sunrise.getHours() + ':' + sunrise.getMinutes(), sunset.getHours() + ':' + sunset.getMinutes()]
       }

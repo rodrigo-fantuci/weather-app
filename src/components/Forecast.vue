@@ -3,7 +3,7 @@
     <div class="row no-wrap">
       <div v-for="n in 13" :key="n" class="flex flex-center forecast-item q-pa-lg" style="height: 10px">
         <h6 class="text-white"> {{ formatHour(n - 1) }} </h6>
-        <h6 class="text-weight-bolder"> {{ Math.round(this.forecastData.list[n].main.temp) }}° </h6>
+        <h6 class="text-weight-bolder"> {{ Math.round(forecastData[n].temp) }}° </h6>
         <img :src="`${this.url_icon}${getIcon(n - 1)}.png`">
       </div>
     </div>
@@ -11,8 +11,6 @@
 </template>
 
 <script>
-  import { date } from "quasar"
-
   export default {
     props: {
       forecastData: {
@@ -31,16 +29,15 @@
     },
     methods: {
       formatHour(n) {
-        const timeStampForecast = new Date(this.forecastData.list[n].dt_txt)
-        const hourFormatted = date.subtractFromDate(timeStampForecast, { hours: 4 }).getHours()
+        const time = this.forecastData[n].time
 
-        if (hourFormatted < 10) {
-          return `0${hourFormatted}:00`
+        if (time < 10) {
+          return `0${time}:00`
         }
-        return hourFormatted + ':00'
+        return time + ':00'
       },
       getIcon(n) {
-        const weatherNow = this.forecastData.list[n].weather[0].description
+        const weatherNow = this.forecastData[n].description
         const currentHour = this.formatHour(n).slice(0, 2)
         let iconD;
         let iconN;

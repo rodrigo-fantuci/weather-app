@@ -3,10 +3,10 @@
 
   <div class="row q-mt-lg">
     <div class="col-6 q-pl-xl">
-      <h5 class="city-name"> {{ this.forecastData.city.name }} - MS </h5>
-      <h1 class="q-my-md text-weight-bold"> {{Math.round(forecastData.list[0].main.temp)}}° </h1>
-      <h6 class="description q-mt-lg"> {{capitalizeString(forecastData.list[0].weather[0].description)}} </h6>
-      <h6 class="description">Sensação térmica: {{Math.round(forecastData.list[0].main.feels_like)}}° </h6>
+      <h5 class="city-name"> Dourados - MS </h5>
+      <h1 class="q-my-md text-weight-bold"> {{ forecastData[0].temp }}° </h1>
+      <h6 class="description q-mt-lg"> {{capitalizeString(forecastData[0].description = 'ceu limpo' ? 'céu limpo' : forecastData[0].description)}} </h6>
+      <h6 class="description">Sensação térmica: {{Math.round(forecastData[0].feels_like)}}° </h6>
     </div>
 
      <div class="col-6 flex flex-center">
